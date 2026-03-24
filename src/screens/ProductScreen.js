@@ -18,7 +18,7 @@ export default function ProductScreen({ route, navigation }) {
   const handleAddToCart = () => {
     addToCart(product);
     Alert.alert('Added', `${product.name} added to cart`, [
-      { text: 'Continue Shopping', onPress: () => navigation.goBack() },
+      { text: 'Continue Shopping', style: 'cancel', onPress: () => navigation.goBack() },
       { text: 'Go to Cart', onPress: () => navigation.navigate('Cart') },
     ]);
   };

@@ -18,7 +18,7 @@ describe('Cart Functionality', () => {
     expect(productName).toBeTruthy();
 
     await ProductScreen.tapAddToCart();
-    await driver.acceptAlert();
+    await driver.dismissAlert();
   });
 
   it('should display items in the cart', async () => {
