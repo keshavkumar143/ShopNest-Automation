@@ -17,11 +17,11 @@ export default function CartScreen() {
   const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <View style={styles.container} testID="cart-screen">
+    <View style={styles.container} testID="cart-screen" accessibilityLabel="cart-screen">
       {cart.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyIcon}>🛒</Text>
-          <Text style={styles.emptyText} testID="cart-empty-message">
+          <Text style={styles.emptyText} testID="cart-empty-message" accessibilityLabel="cart-empty-message">
             Your cart is empty
           </Text>
         </View>
@@ -31,6 +31,7 @@ export default function CartScreen() {
             data={cart}
             keyExtractor={(_, index) => index.toString()}
             testID="cart-item-list"
+            accessibilityLabel="cart-item-list"
             contentContainerStyle={styles.listContent}
             renderItem={({ item, index }) => (
               <CartItem
@@ -44,7 +45,7 @@ export default function CartScreen() {
           <View style={styles.footer}>
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Total:</Text>
-              <Text style={styles.totalValue} testID="cart-total-price">
+              <Text style={styles.totalValue} testID="cart-total-price" accessibilityLabel="cart-total-price">
                 ₹{totalPrice}
               </Text>
             </View>

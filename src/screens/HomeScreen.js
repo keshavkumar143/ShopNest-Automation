@@ -20,9 +20,9 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container} testID="home-screen">
+    <View style={styles.container} testID="home-screen" accessibilityLabel="home-screen">
       <View style={styles.header}>
-        <Text style={styles.heading} testID="home-title">
+        <Text style={styles.heading} testID="home-title" accessibilityLabel="home-title">
           Products
         </Text>
         <TouchableOpacity
@@ -39,6 +39,7 @@ export default function HomeScreen({ navigation }) {
         data={products}
         keyExtractor={(item) => item.id}
         testID="home-product-list"
+        accessibilityLabel="home-product-list"
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
           <ProductCard

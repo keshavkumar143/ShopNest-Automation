@@ -29,22 +29,23 @@ export default function LoginScreen({ navigation }) {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       testID="login-screen"
+      accessibilityLabel="login-screen"
     >
       <View style={styles.logoContainer}>
-        <Text style={styles.logo} testID="login-logo">
+        <Text style={styles.logo} testID="login-logo" accessibilityLabel="login-logo">
           🛍️
         </Text>
-        <Text style={styles.title} testID="login-title">
+        <Text style={styles.title} testID="login-title" accessibilityLabel="login-title">
           ShopNest
         </Text>
-        <Text style={styles.subtitle} testID="login-subtitle">
+        <Text style={styles.subtitle} testID="login-subtitle" accessibilityLabel="login-subtitle">
           Sign in to continue
         </Text>
       </View>
 
       <View style={styles.formContainer}>
         {errorMessage ? (
-          <Text style={styles.errorText} testID="login-error-message">
+          <Text style={styles.errorText} testID="login-error-message" accessibilityLabel="login-error-message">
             {errorMessage}
           </Text>
         ) : null}
