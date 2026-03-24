@@ -17,11 +17,11 @@ export default function CartScreen() {
   const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <View style={styles.container} testID="cart-screen">
+    <View style={styles.container} testID="cart-screen" accessibilityLabel="cart-screen">
       {cart.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyIcon}>🛒</Text>
-          <Text style={styles.emptyText} testID="cart-empty-message">
+          <Text style={styles.emptyText} testID="cart-empty-message" accessibilityLabel="cart-empty-message">
             Your cart is empty
           </Text>
         </View>
