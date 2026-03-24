@@ -39,6 +39,7 @@ export default function HomeScreen({ navigation }) {
         data={products}
         keyExtractor={(item) => item.id}
         testID="home-product-list"
+        accessibilityLabel="home-product-list"
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
           <ProductCard
