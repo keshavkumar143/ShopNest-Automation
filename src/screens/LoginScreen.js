@@ -44,7 +44,7 @@ export default function LoginScreen({ navigation }) {
 
       <View style={styles.formContainer}>
         {errorMessage ? (
-          <Text style={styles.errorText} testID="login-error-message">
+          <Text style={styles.errorText} testID="login-error-message" accessibilityLabel="login-error-message">
             {errorMessage}
           </Text>
         ) : null}
