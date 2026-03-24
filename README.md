@@ -1,50 +1,214 @@
-# Welcome to your Expo app 👋
+# ShopNest - Mobile App + Automation Framework
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A UI-only React Native (Expo) shopping app with a complete WebdriverIO + Appium automation test suite.
 
-## Get started
+---
 
-1. Install dependencies
+## Project Structure
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+ShopNest-Automation/
+├── App.js                          # App entry point
+├── app.json                        # Expo config
+├── eas.json                        # EAS Build config
+├── package.json                    # App dependencies
+│
+├── src/
+│   ├── screens/
+│   │   ├── LoginScreen.js          # Login with validation
+│   │   ├── HomeScreen.js           # Product list
+│   │   ├── ProductScreen.js        # Product detail + Add to Cart
+│   │   └── CartScreen.js           # Cart with remove & total
+│   ├── components/
+│   │   ├── ProductCard.js          # Reusable product card
+│   │   └── CartItem.js             # Reusable cart item row
+│   ├── navigation/
+│   │   └── AppNavigator.js         # Stack navigator
+│   ├── data/
+│   │   └── products.js             # Static JSON product data
+│   ├── utils/
+│   │   └── cartStore.js            # Zustand cart state
+│   └── constants/
+│       └── theme.js                # Color palette
+│
+├── tests/                          # Automation framework
+│   ├── config/
+│   │   ├── wdio.local.conf.js      # Local Appium config
+│   │   └── wdio.browserstack.conf.js
+│   ├── screenObjects/              # Page Object Model
+│   │   ├── LoginScreen.js
+│   │   ├── HomeScreen.js
+│   │   ├── ProductScreen.js
+│   │   └── CartScreen.js
+│   ├── test/specs/
+│   │   ├── login.spec.js
+│   │   ├── cart.spec.js
+│   │   └── navigation.spec.js
+│   ├── utils/
+│   │   └── helpers.js              # Reusable driver helpers
+│   ├── .env                        # BrowserStack secrets
+│   └── package.json
+│
+└── assets/images/                  # App icons
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## App Setup
 
-To learn more about developing your project with Expo, look at the following resources:
+### Prerequisites
+- Node.js >= 18
+- Expo CLI: `npm install -g expo-cli`
+- EAS CLI: `npm install -g eas-cli`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Install & Run
 
-## Join the community
+```bash
+# Install dependencies
+npm install
 
-Join our community of developers creating universal apps.
+# Start Expo dev server
+npm start
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# Run on Android emulator
+npm run android
+
+# Run on iOS simulator
+npm run ios
+```
+
+---
+
+## App Features
+
+| Screen          | Features                                          |
+|-----------------|---------------------------------------------------|
+| **Login**       | Username/password inputs, validation, login button |
+| **Home**        | Scrollable product list, cart button               |
+| **Product**     | Product details, Add to Cart button                |
+| **Cart**        | Cart items, remove item, total price, checkout     |
+
+### Tech Stack
+- **React Native** (Expo)
+- **React Navigation** (Stack)
+- **Zustand** (state management)
+- Static JSON data (no backend)
+
+---
+
+## Build APK (EAS)
+
+```bash
+# Login to Expo
+eas login
+
+# Build APK (Android)
+npm run build:apk
+# or
+eas build --platform android --profile preview
+```
+
+The APK will be available for download from the Expo dashboard.
+
+---
+
+## Automation Setup
+
+### Prerequisites
+- Node.js >= 18
+- Appium 2.x: `npm install -g appium`
+- Appium UiAutomator2 driver: `appium driver install uiautomator2`
+- Android SDK with an emulator (for local)
+
+### Install Test Dependencies
+
+```bash
+cd tests
+npm install
+```
+
+### Configure Environment
+
+Edit `tests/.env` with your BrowserStack credentials:
+
+```
+BROWSERSTACK_USERNAME=your_username
+BROWSERSTACK_ACCESS_KEY=your_access_key
+BROWSERSTACK_APP_ID=bs://your_app_id
+```
+
+### Upload APK to BrowserStack
+
+```bash
+curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
+  -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
+  -F "file=@/path/to/app-release.apk"
+```
+
+Copy the returned `app_url` (e.g., `bs://abc123`) into `BROWSERSTACK_APP_ID` in `.env`.
+
+### Run Tests
+
+```bash
+cd tests
+
+# Local (Appium server must be running)
+npm run test:local
+
+# BrowserStack
+npm run test:bs
+```
+
+---
+
+## Test Coverage
+
+| Spec File           | Scenarios                                          |
+|---------------------|---------------------------------------------------|
+| `login.spec.js`     | Screen elements, empty validation, partial input, success |
+| `cart.spec.js`      | Add item, display items, total price, remove item  |
+| `navigation.spec.js`| Home->Product, back, Home->Cart, full flow         |
+
+### Design Patterns
+- **Page Object Model (POM)** — screen objects in `screenObjects/`
+- **accessibilityId selectors** — all locators use `~accessibilityId`
+- **Reusable helpers** — wait, tap, input, getText utilities
+
+---
+
+## All testIDs
+
+| Screen   | testID                          |
+|----------|---------------------------------|
+| Login    | `login-screen`                  |
+| Login    | `login-logo`                    |
+| Login    | `login-title`                   |
+| Login    | `login-subtitle`                |
+| Login    | `login-username-input`          |
+| Login    | `login-password-input`          |
+| Login    | `login-button`                  |
+| Login    | `login-error-message`           |
+| Home     | `home-screen`                   |
+| Home     | `home-title`                    |
+| Home     | `home-cart-button`              |
+| Home     | `home-product-list`             |
+| Home     | `product-card-{id}`             |
+| Home     | `product-card-{id}-name`        |
+| Home     | `product-card-{id}-price`       |
+| Home     | `product-card-{id}-image`       |
+| Product  | `product-screen`                |
+| Product  | `product-image`                 |
+| Product  | `product-name`                  |
+| Product  | `product-price`                 |
+| Product  | `product-description`           |
+| Product  | `product-add-to-cart-button`    |
+| Cart     | `cart-screen`                   |
+| Cart     | `cart-empty-message`            |
+| Cart     | `cart-item-list`                |
+| Cart     | `cart-item-{index}`             |
+| Cart     | `cart-item-{index}-name`        |
+| Cart     | `cart-item-{index}-price`       |
+| Cart     | `cart-item-{index}-image`       |
+| Cart     | `cart-item-{index}-remove-button` |
+| Cart     | `cart-total-price`              |
+| Cart     | `cart-checkout-button`          |
