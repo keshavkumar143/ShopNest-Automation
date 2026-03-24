@@ -31,6 +31,7 @@ export default function CartScreen() {
             data={cart}
             keyExtractor={(_, index) => index.toString()}
             testID="cart-item-list"
+            accessibilityLabel="cart-item-list"
             contentContainerStyle={styles.listContent}
             renderItem={({ item, index }) => (
               <CartItem
@@ -44,7 +45,7 @@ export default function CartScreen() {
           <View style={styles.footer}>
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Total:</Text>
-              <Text style={styles.totalValue} testID="cart-total-price">
+              <Text style={styles.totalValue} testID="cart-total-price" accessibilityLabel="cart-total-price">
                 ₹{totalPrice}
               </Text>
             </View>
