@@ -20,7 +20,7 @@ export default function ProductCard({ product, onPress, testID }) {
           {product.name}
         </Text>
         <Text style={styles.price} testID={`${testID}-price`} accessibilityLabel={`${testID}-price`}>
-          ₹{product.price}
+          ${product.price}
         </Text>
       </View>
     </TouchableOpacity>

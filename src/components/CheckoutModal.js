@@ -140,7 +140,7 @@ export default function CheckoutModal({ visible, cart, totalPrice, onClose, onOr
       {cart.map((item, index) => (
         <View key={index} style={styles.summaryRow}>
           <Text style={styles.summaryItem} numberOfLines={1}>{item.name}</Text>
-          <Text style={styles.summaryPrice}>₹{item.price}</Text>
+          <Text style={styles.summaryPrice}>${item.price}</Text>
         </View>
       ))}
 
@@ -148,7 +148,7 @@ export default function CheckoutModal({ visible, cart, totalPrice, onClose, onOr
 
       <View style={styles.summaryRow}>
         <Text style={styles.totalLabel}>Total</Text>
-        <Text style={styles.totalValue} testID="checkout-total" accessibilityLabel="checkout-total">₹{totalPrice}</Text>
+        <Text style={styles.totalValue} testID="checkout-total" accessibilityLabel="checkout-total">${totalPrice}</Text>
       </View>
 
       <TouchableOpacity
@@ -157,7 +157,7 @@ export default function CheckoutModal({ visible, cart, totalPrice, onClose, onOr
         testID="checkout-pay-button"
         accessibilityLabel="checkout-pay-button"
       >
-        <Text style={styles.payButtonText}>Pay ₹{totalPrice}</Text>
+        <Text style={styles.payButtonText}>Pay ${totalPrice}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -15,7 +15,7 @@ export default function CartItem({ item, onRemove, testID }) {
           {item.name}
         </Text>
         <Text style={styles.price} testID={`${testID}-price`} accessibilityLabel={`${testID}-price`}>
-          ₹{item.price}
+          ${item.price}
         </Text>
       </View>
       <TouchableOpacity

@@ -36,7 +36,7 @@ describe('Cart Functionality', () => {
 
   it('should show total price', async () => {
     const total = await CartScreen.getTotalPrice();
-    expect(total).toContain('₹');
+    expect(total).toContain('$');
   });
 
   it('should remove an item from cart', async () => {

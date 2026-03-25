@@ -42,7 +42,7 @@ export default function ProductScreen({ route, navigation }) {
           {product.name}
         </Text>
         <Text style={styles.price} testID="product-price" accessibilityLabel="product-price">
-          ₹{product.price}
+          ${product.price}
         </Text>
         <Text style={styles.description} testID="product-description" accessibilityLabel="product-description">
           {product.description}

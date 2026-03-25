@@ -59,7 +59,7 @@ export default function CartScreen({ navigation }) {
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Total:</Text>
               <Text style={styles.totalValue} testID="cart-total-price" accessibilityLabel="cart-total-price">
-                ₹{totalPrice}
+                ${totalPrice}
               </Text>
             </View>
             <TouchableOpacity
