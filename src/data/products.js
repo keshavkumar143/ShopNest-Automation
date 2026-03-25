@@ -39,6 +39,6 @@ export const products = [
     name: 'Wireless Earbuds',
     price: 42.99,
     description: 'Noise-cancelling wireless earbuds with 24-hour battery life.',
-    image: 'https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=300&h=300&fit=crop',
+    image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=300&h=300&fit=crop',
   },
 ];
