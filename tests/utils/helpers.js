@@ -20,15 +20,25 @@ async function getElementText(accessibilityId) {
   return element.getText();
 }
 
+async function clearInput(accessibilityId) {
+  const element = await waitForElement(accessibilityId);
+  await element.clearValue();
+}
+
 async function isElementDisplayed(accessibilityId) {
-  const element = await $(`~${accessibilityId}`);
-  return element.isDisplayed();
+  try {
+    const element = await $(`~${accessibilityId}`);
+    return await element.isDisplayed();
+  } catch {
+    return false;
+  }
 }
 
 module.exports = {
   waitForElement,
   tapElement,
   setInputValue,
+  clearInput,
   getElementText,
   isElementDisplayed,
 };

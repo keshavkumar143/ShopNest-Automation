@@ -1,4 +1,4 @@
-const { waitForElement, setInputValue, tapElement, getElementText, isElementDisplayed } = require('../utils/helpers');
+const { waitForElement, setInputValue, clearInput, tapElement, getElementText, isElementDisplayed } = require('../utils/helpers');
 
 class LoginScreen {
   get screenContainer()   { return $('~login-screen'); }
@@ -38,6 +38,11 @@ class LoginScreen {
 
   async isErrorDisplayed() {
     return isElementDisplayed('login-error-message');
+  }
+
+  async clearFields() {
+    await clearInput('login-username-input');
+    await clearInput('login-password-input');
   }
 
   async getTitleText() {
