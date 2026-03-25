@@ -4,17 +4,17 @@ import { Colors } from '../constants/theme';
 
 export default function CartItem({ item, onRemove, testID }) {
   return (
-    <View style={styles.card} testID={testID}>
+    <View style={styles.card} testID={testID} accessibilityLabel={testID}>
       <Image
         source={{ uri: item.image }}
         style={styles.image}
         testID={`${testID}-image`}
       />
       <View style={styles.info}>
-        <Text style={styles.name} testID={`${testID}-name`} numberOfLines={1}>
+        <Text style={styles.name} testID={`${testID}-name`} accessibilityLabel={`${testID}-name`} numberOfLines={1}>
           {item.name}
         </Text>
-        <Text style={styles.price} testID={`${testID}-price`}>
+        <Text style={styles.price} testID={`${testID}-price`} accessibilityLabel={`${testID}-price`}>
           ₹{item.price}
         </Text>
       </View>

@@ -28,6 +28,7 @@ export default function ProductScreen({ route, navigation }) {
       style={styles.container}
       contentContainerStyle={styles.content}
       testID="product-screen"
+      accessibilityLabel="product-screen"
     >
       <Image
         source={{ uri: product.image }}
@@ -37,13 +38,13 @@ export default function ProductScreen({ route, navigation }) {
       />
 
       <View style={styles.infoContainer}>
-        <Text style={styles.name} testID="product-name">
+        <Text style={styles.name} testID="product-name" accessibilityLabel="product-name">
           {product.name}
         </Text>
-        <Text style={styles.price} testID="product-price">
+        <Text style={styles.price} testID="product-price" accessibilityLabel="product-price">
           ₹{product.price}
         </Text>
-        <Text style={styles.description} testID="product-description">
+        <Text style={styles.description} testID="product-description" accessibilityLabel="product-description">
           {product.description}
         </Text>
 
