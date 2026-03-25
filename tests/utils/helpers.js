@@ -34,6 +34,21 @@ async function isElementDisplayed(accessibilityId) {
   }
 }
 
+async function dismissNativeAlert(timeout = 5000) {
+  await driver.waitUntil(
+    async () => {
+      try {
+        await driver.getAlertText();
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    { timeout, timeoutMsg: 'No alert appeared within timeout' }
+  );
+  await driver.dismissAlert();
+}
+
 module.exports = {
   waitForElement,
   tapElement,
@@ -41,4 +56,5 @@ module.exports = {
   clearInput,
   getElementText,
   isElementDisplayed,
+  dismissNativeAlert,
 };

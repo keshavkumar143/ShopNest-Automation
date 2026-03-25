@@ -93,7 +93,9 @@ npm run ios
 
 ---
 
-## Build APK (EAS)
+## Build App (EAS)
+
+### Android APK
 
 ```bash
 eas login
@@ -101,6 +103,14 @@ npm run build:apk
 ```
 
 The APK will be available for download from the Expo dashboard.
+
+### iOS Simulator Build (macOS only)
+
+```bash
+npx expo run:ios
+```
+
+The `.app` file is generated at `ios/build/Build/Products/Debug-iphonesimulator/ShopNest.app`. Set the path in `IOS_APP_PATH` in your `.env`.
 
 ---
 
@@ -123,7 +133,7 @@ npm install
 
 ### Configure Environment
 
-Copy the template and fill in your BrowserStack credentials:
+Copy the template and fill in your credentials:
 
 ```bash
 cp .env.example .env
@@ -132,10 +142,21 @@ cp .env.example .env
 ```
 BROWSERSTACK_USERNAME=your_username
 BROWSERSTACK_ACCESS_KEY=your_access_key
-BROWSERSTACK_APP_ID=bs://your_app_id
+BROWSERSTACK_APP_ID=bs://your_android_app_id
+BROWSERSTACK_IOS_APP_ID=bs://your_ios_app_id
+
+ANDROID_DEVICE_NAME=emulator-5554
+ANDROID_VERSION=13.0
+ANDROID_APP_PATH=
+
+IOS_DEVICE_NAME=iPhone 15
+IOS_VERSION=17.4
+IOS_APP_PATH=
 ```
 
-### Upload APK to BrowserStack
+### Upload App to BrowserStack
+
+**Android APK:**
 
 ```bash
 curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
@@ -143,32 +164,60 @@ curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
   -F "file=@/path/to/app-release.apk"
 ```
 
-Copy the returned `app_url` (e.g., `bs://abc123`) into `BROWSERSTACK_APP_ID` in `.env`.
+**iOS IPA:**
+
+```bash
+curl -u "YOUR_USERNAME:YOUR_ACCESS_KEY" \
+  -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
+  -F "file=@/path/to/ShopNest.ipa"
+```
+
+Copy the returned `app_url` into `.env`:
+- Android `bs://` URL → `BROWSERSTACK_APP_ID`
+- iOS `bs://` URL → `BROWSERSTACK_IOS_APP_ID`
 
 ### Run Tests
 
+All commands run from the `tests/` directory:
+
 ```bash
 cd tests
+```
 
-# Run all specs locally (login -> navigation -> cart)
-npm test
+#### Android (Local)
 
-# Run a specific suite locally
-npm run test:login
-npm run test:navigation
-npm run test:cart
-npm run test:full
+Requires: Android emulator running + Appium server started
 
-# Run all specs on BrowserStack (4 devices in parallel)
+```bash
+npm run test:android
+npm run test:android:login
+npm run test:android:navigation
+npm run test:android:cart
+```
+
+#### iOS (Local)
+
+Requires: macOS + Xcode + iOS Simulator + Appium with XCUITest driver
+
+```bash
+appium driver install xcuitest
+
+npm run test:ios
+npm run test:ios:login
+npm run test:ios:navigation
+npm run test:ios:cart
+```
+
+#### BrowserStack (Android + iOS)
+
+Runs on 4 devices in parallel (Galaxy S23, Galaxy Tab S8, iPhone 15, iPad Pro 12.9):
+
+```bash
 npm run test:bs
-
-# Run a specific suite on BrowserStack
 npm run test:bs:login
 npm run test:bs:navigation
 npm run test:bs:cart
 npm run test:bs:full
-
-# Run via BrowserStack Node SDK (uses browserstack.yml)
 npm run test:bs:sdk
 ```
 
@@ -195,11 +244,14 @@ The `browserstack.yml` and `wdio.browserstack.conf.js` target 8 devices across p
 
 ```
 wdio.base.conf.js          ← Shared: specs order, suites, framework, timeouts
-    ├── wdio.local.conf.js  ← Extends base + local Appium capabilities
-    └── wdio.browserstack.conf.js ← Extends base + 4 BrowserStack capabilities
+    ├── wdio.local.conf.js  ← Extends base + Android/iOS capability (PLATFORM env var)
+    └── wdio.browserstack.conf.js ← Extends base + 4 capabilities (2 Android + 2 iOS)
 ```
 
 Specs execute in order: `login.spec.js` → `navigation.spec.js` → `cart.spec.js`
+
+The local config reads `PLATFORM=android|ios` to select the right capability (defaults to Android).
+The BrowserStack config uses `BROWSERSTACK_APP_ID` for Android and `BROWSERSTACK_IOS_APP_ID` for iOS.
 
 ---
 

@@ -2,6 +2,7 @@ const LoginScreen = require('../../screenObjects/LoginScreen');
 const HomeScreen = require('../../screenObjects/HomeScreen');
 const ProductScreen = require('../../screenObjects/ProductScreen');
 const CartScreen = require('../../screenObjects/CartScreen');
+const { dismissNativeAlert } = require('../../utils/helpers');
 
 describe('Navigation Flow', () => {
   before(async () => {
@@ -47,7 +48,7 @@ describe('Navigation Flow', () => {
     await ProductScreen.waitForScreen();
 
     await ProductScreen.tapAddToCart();
-    await driver.dismissAlert();
+    await dismissNativeAlert();
 
     await HomeScreen.waitForScreen();
     await HomeScreen.tapCartButton();

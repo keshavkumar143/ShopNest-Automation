@@ -2,6 +2,7 @@ const LoginScreen = require('../../screenObjects/LoginScreen');
 const HomeScreen = require('../../screenObjects/HomeScreen');
 const ProductScreen = require('../../screenObjects/ProductScreen');
 const CartScreen = require('../../screenObjects/CartScreen');
+const { dismissNativeAlert } = require('../../utils/helpers');
 
 describe('Cart Functionality', () => {
   before(async () => {
@@ -18,7 +19,7 @@ describe('Cart Functionality', () => {
     expect(productName).toBeTruthy();
 
     await ProductScreen.tapAddToCart();
-    await driver.dismissAlert();
+    await dismissNativeAlert();
   });
 
   it('should display items in the cart', async () => {

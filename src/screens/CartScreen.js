@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,13 +8,26 @@ import {
 } from 'react-native';
 import { useCartStore } from '../utils/cartStore';
 import CartItem from '../components/CartItem';
+import CheckoutModal from '../components/CheckoutModal';
 import { Colors } from '../constants/theme';
 
-export default function CartScreen() {
+export default function CartScreen({ navigation }) {
   const cart = useCartStore((state) => state.cart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const [checkoutVisible, setCheckoutVisible] = useState(false);
 
   const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+
+  const handleCheckout = () => {
+    setCheckoutVisible(true);
+  };
+
+  const handleOrderPlaced = () => {
+    setCheckoutVisible(false);
+    clearCart();
+    navigation.navigate('Home');
+  };
 
   return (
     <View style={styles.container} testID="cart-screen" accessibilityLabel="cart-screen">
@@ -51,6 +64,7 @@ export default function CartScreen() {
             </View>
             <TouchableOpacity
               style={styles.checkoutButton}
+              onPress={handleCheckout}
               testID="cart-checkout-button"
               accessibilityLabel="cart-checkout-button"
             >
@@ -59,6 +73,14 @@ export default function CartScreen() {
           </View>
         </>
       )}
+
+      <CheckoutModal
+        visible={checkoutVisible}
+        cart={cart}
+        totalPrice={totalPrice}
+        onClose={() => setCheckoutVisible(false)}
+        onOrderPlaced={handleOrderPlaced}
+      />
     </View>
   );
 }

@@ -5,6 +5,9 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const { BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_APP_ID } =
   process.env;
 
+const BROWSERSTACK_IOS_APP_ID =
+  process.env.BROWSERSTACK_IOS_APP_ID || BROWSERSTACK_APP_ID;
+
 if (!BROWSERSTACK_USERNAME || !BROWSERSTACK_ACCESS_KEY || !BROWSERSTACK_APP_ID) {
   throw new Error(
     'Missing BrowserStack credentials. Set BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, and BROWSERSTACK_APP_ID in tests/.env'
@@ -59,7 +62,7 @@ exports.config = {
         sessionName: 'iOS Phone',
       },
       platformName: 'iOS',
-      'appium:app': BROWSERSTACK_APP_ID,
+      'appium:app': BROWSERSTACK_IOS_APP_ID,
       'appium:automationName': 'XCUITest',
       'appium:noReset': false,
     },
@@ -71,7 +74,7 @@ exports.config = {
         sessionName: 'iOS Tablet',
       },
       platformName: 'iOS',
-      'appium:app': BROWSERSTACK_APP_ID,
+      'appium:app': BROWSERSTACK_IOS_APP_ID,
       'appium:automationName': 'XCUITest',
       'appium:noReset': false,
     },
