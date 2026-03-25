@@ -1,0 +1,57 @@
+userName: ${BROWSERSTACK_USERNAME}
+accessKey: ${BROWSERSTACK_ACCESS_KEY}
+
+projectName: ShopNest
+buildName: shopnest-build-1
+
+app: ${BROWSERSTACK_APP_ID}
+
+platforms:
+  - deviceName: Samsung Galaxy S23
+    osVersion: 13.0
+    platformName: Android
+    deviceOrientation: portrait
+
+  - deviceName: Google Pixel 7
+    osVersion: 13.0
+    platformName: Android
+    deviceOrientation: portrait
+
+  - deviceName: Samsung Galaxy Tab S8
+    osVersion: 12.0
+    platformName: Android
+    deviceOrientation: portrait
+
+  - deviceName: Google Pixel Tablet
+    osVersion: 13.0
+    platformName: Android
+    deviceOrientation: landscape
+
+  - deviceName: iPhone 15
+    osVersion: 17
+    platformName: iOS
+    deviceOrientation: portrait
+
+  - deviceName: iPhone 13
+    osVersion: 15
+    platformName: iOS
+    deviceOrientation: portrait
+
+  - deviceName: iPad Pro 12.9 2022
+    osVersion: 16
+    platformName: iOS
+    deviceOrientation: portrait
+
+  - deviceName: iPad 10th
+    osVersion: 16
+    platformName: iOS
+    deviceOrientation: landscape
+
+browserstackLocal: true
+parallelsPerPlatform: 3
+
+debug: true
+networkLogs: true
+consoleLogs: errors
+
+appiumVersion: 2.6.0
