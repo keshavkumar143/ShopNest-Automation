@@ -16,10 +16,10 @@ export default function ProductCard({ product, onPress, testID }) {
         testID={`${testID}-image`}
       />
       <View style={styles.info}>
-        <Text style={styles.name} testID={`${testID}-name`} numberOfLines={1}>
+        <Text style={styles.name} testID={`${testID}-name`} accessibilityLabel={`${testID}-name`} numberOfLines={1}>
           {product.name}
         </Text>
-        <Text style={styles.price} testID={`${testID}-price`}>
+        <Text style={styles.price} testID={`${testID}-price`} accessibilityLabel={`${testID}-price`}>
           ₹{product.price}
         </Text>
       </View>

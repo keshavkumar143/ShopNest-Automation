@@ -1,4 +1,5 @@
 const path = require('path');
+const { baseConfig } = require('./wdio.base.conf');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const { BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_APP_ID } =
@@ -10,37 +11,84 @@ if (!BROWSERSTACK_USERNAME || !BROWSERSTACK_ACCESS_KEY || !BROWSERSTACK_APP_ID) 
   );
 }
 
+const sharedBstackOptions = {
+  projectName: 'ShopNest',
+  buildName: `ShopNest-${new Date().toISOString().slice(0, 10)}`,
+  debug: true,
+  networkLogs: true,
+  consoleLogs: 'errors',
+  appiumVersion: '2.6.0',
+};
+
 exports.config = {
+  ...baseConfig,
   user: BROWSERSTACK_USERNAME,
   key: BROWSERSTACK_ACCESS_KEY,
   hostname: 'hub.browserstack.com',
-  specs: [path.join(__dirname, '..', 'test', 'specs', '**', '*.spec.js')],
-  maxInstances: 1,
+
   capabilities: [
     {
       'bstack:options': {
+        ...sharedBstackOptions,
         deviceName: 'Samsung Galaxy S23',
         osVersion: '13.0',
-        projectName: 'ShopNest',
-        buildName: 'ShopNest Build 1',
-        sessionName: 'ShopNest Tests',
-        debug: true,
-        networkLogs: true,
+        sessionName: 'Android Phone',
       },
       platformName: 'Android',
       'appium:app': BROWSERSTACK_APP_ID,
       'appium:automationName': 'UiAutomator2',
       'appium:noReset': false,
     },
+    {
+      'bstack:options': {
+        ...sharedBstackOptions,
+        deviceName: 'Samsung Galaxy Tab S8',
+        osVersion: '12.0',
+        sessionName: 'Android Tablet',
+      },
+      platformName: 'Android',
+      'appium:app': BROWSERSTACK_APP_ID,
+      'appium:automationName': 'UiAutomator2',
+      'appium:noReset': false,
+    },
+    {
+      'bstack:options': {
+        ...sharedBstackOptions,
+        deviceName: 'iPhone 15',
+        osVersion: '17',
+        sessionName: 'iOS Phone',
+      },
+      platformName: 'iOS',
+      'appium:app': BROWSERSTACK_APP_ID,
+      'appium:automationName': 'XCUITest',
+      'appium:noReset': false,
+    },
+    {
+      'bstack:options': {
+        ...sharedBstackOptions,
+        deviceName: 'iPad Pro 12.9 2022',
+        osVersion: '16',
+        sessionName: 'iOS Tablet',
+      },
+      platformName: 'iOS',
+      'appium:app': BROWSERSTACK_APP_ID,
+      'appium:automationName': 'XCUITest',
+      'appium:noReset': false,
+    },
   ],
-  services: ['browserstack'],
-  framework: 'mocha',
-  reporters: ['spec'],
+
+  services: [
+    [
+      'browserstack',
+      {
+        browserstackLocal: true,
+      },
+    ],
+  ],
   mochaOpts: {
-    ui: 'bdd',
+    ...baseConfig.mochaOpts,
     timeout: 120000,
   },
   waitforTimeout: 15000,
   connectionRetryTimeout: 60000,
-  connectionRetryCount: 3,
 };

@@ -1,10 +1,19 @@
 {
   "name": "shopnest-automation",
   "version": "1.0.0",
-
   "scripts": {
+    "test": "npx wdio config/wdio.local.conf.js",
     "test:local": "npx wdio config/wdio.local.conf.js",
-    "test:bs": "npx wdio config/wdio.browserstack.conf.js"
+    "test:bs": "npx wdio config/wdio.browserstack.conf.js",
+    "test:bs:sdk": "npx browserstack-node-sdk wdio config/wdio.browserstack.conf.js",
+    "test:login": "npx wdio config/wdio.local.conf.js --suite login",
+    "test:navigation": "npx wdio config/wdio.local.conf.js --suite navigation",
+    "test:cart": "npx wdio config/wdio.local.conf.js --suite cart",
+    "test:full": "npx wdio config/wdio.local.conf.js --suite full",
+    "test:bs:full": "npx wdio config/wdio.browserstack.conf.js --suite full",
+    "test:bs:login": "npx wdio config/wdio.browserstack.conf.js --suite login",
+    "test:bs:navigation": "npx wdio config/wdio.browserstack.conf.js --suite navigation",
+    "test:bs:cart": "npx wdio config/wdio.browserstack.conf.js --suite cart"
   },
   "dependencies": {
     "@wdio/appium-service": "^9.0.0",
@@ -13,6 +22,7 @@
     "@wdio/local-runner": "^9.0.0",
     "@wdio/mocha-framework": "^9.0.0",
     "@wdio/spec-reporter": "^9.0.0",
+    "browserstack-node-sdk": "^1.0.0",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {}

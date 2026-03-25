@@ -4,6 +4,7 @@ const HomeScreen = require('../../screenObjects/HomeScreen');
 describe('Login Screen', () => {
   beforeEach(async () => {
     await LoginScreen.waitForScreen();
+    await LoginScreen.clearFields();
   });
 
   it('should display login screen elements', async () => {

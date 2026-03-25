@@ -47,7 +47,7 @@ describe('Navigation Flow', () => {
     await ProductScreen.waitForScreen();
 
     await ProductScreen.tapAddToCart();
-    await driver.acceptAlert();
+    await driver.dismissAlert();
 
     await HomeScreen.waitForScreen();
     await HomeScreen.tapCartButton();
