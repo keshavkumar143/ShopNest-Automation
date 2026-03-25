@@ -1,10 +1,10 @@
 const path = require('path');
+const { baseConfig } = require('./wdio.base.conf');
 
 exports.config = {
+  ...baseConfig,
   runner: 'local',
   port: 4723,
-  specs: [path.join(__dirname, '..', 'test', 'specs', '**', '*.spec.js')],
-  maxInstances: 1,
   capabilities: [
     {
       platformName: 'Android',
@@ -28,13 +28,4 @@ exports.config = {
     },
   ],
   services: ['appium'],
-  framework: 'mocha',
-  reporters: ['spec'],
-  mochaOpts: {
-    ui: 'bdd',
-    timeout: 60000,
-  },
-  waitforTimeout: 10000,
-  connectionRetryTimeout: 30000,
-  connectionRetryCount: 3,
 };
