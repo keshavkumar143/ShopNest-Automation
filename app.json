@@ -19,6 +19,11 @@
         "foregroundImage": "./assets/images/icon.png"
       }
     },
-    "plugins": []
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "feb95d5b-5238-41cb-b7fb-1a640caaa20a"
+      }
+    }
   }
 }
