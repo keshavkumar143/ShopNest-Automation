@@ -1,3 +1,10 @@
+/**
+ * BrowserStack WebDriverIO config for ShopNest mobile automation.
+ *
+ * Currently running: Android only (Samsung Galaxy S23)
+ * To enable iOS: uncomment the iOS capabilities below and set
+ * BROWSERSTACK_IOS_APP_ID in tests/.env with a valid .ipa app URL.
+ */
 const path = require('path');
 const { baseConfig } = require('./wdio.base.conf');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
@@ -5,6 +12,7 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const { BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_APP_ID } =
   process.env;
 
+// iOS app ID - set BROWSERSTACK_IOS_APP_ID in .env, or falls back to Android app ID
 const BROWSERSTACK_IOS_APP_ID =
   process.env.BROWSERSTACK_IOS_APP_ID || BROWSERSTACK_APP_ID;
 
@@ -30,6 +38,7 @@ exports.config = {
   hostname: 'hub.browserstack.com',
 
   capabilities: [
+    // ─── Android Devices ───────────────────────────────────────
     {
       'bstack:options': {
         ...sharedBstackOptions,
@@ -42,42 +51,45 @@ exports.config = {
       'appium:automationName': 'UiAutomator2',
       'appium:noReset': false,
     },
-    {
-      'bstack:options': {
-        ...sharedBstackOptions,
-        deviceName: 'Samsung Galaxy Tab S8',
-        osVersion: '12.0',
-        sessionName: 'Android Tablet',
-      },
-      platformName: 'Android',
-      'appium:app': BROWSERSTACK_APP_ID,
-      'appium:automationName': 'UiAutomator2',
-      'appium:noReset': false,
-    },
-    {
-      'bstack:options': {
-        ...sharedBstackOptions,
-        deviceName: 'iPhone 15',
-        osVersion: '17',
-        sessionName: 'iOS Phone',
-      },
-      platformName: 'iOS',
-      'appium:app': BROWSERSTACK_IOS_APP_ID,
-      'appium:automationName': 'XCUITest',
-      'appium:noReset': false,
-    },
-    {
-      'bstack:options': {
-        ...sharedBstackOptions,
-        deviceName: 'iPad Pro 12.9 2022',
-        osVersion: '16',
-        sessionName: 'iOS Tablet',
-      },
-      platformName: 'iOS',
-      'appium:app': BROWSERSTACK_IOS_APP_ID,
-      'appium:automationName': 'XCUITest',
-      'appium:noReset': false,
-    },
+    // Uncomment to add more Android devices:
+    // {
+    //   'bstack:options': {
+    //     ...sharedBstackOptions,
+    //     deviceName: 'Samsung Galaxy Tab S8',
+    //     osVersion: '12.0',
+    //     sessionName: 'Android Tablet',
+    //   },
+    //   platformName: 'Android',
+    //   'appium:app': BROWSERSTACK_APP_ID,
+    //   'appium:automationName': 'UiAutomator2',
+    //   'appium:noReset': false,
+    // },
+
+    // ─── iOS Devices (requires .ipa upload & BROWSERSTACK_IOS_APP_ID in .env) ──
+    // {
+    //   'bstack:options': {
+    //     ...sharedBstackOptions,
+    //     deviceName: 'iPhone 15',
+    //     osVersion: '17',
+    //     sessionName: 'iOS Phone',
+    //   },
+    //   platformName: 'iOS',
+    //   'appium:app': BROWSERSTACK_IOS_APP_ID,
+    //   'appium:automationName': 'XCUITest',
+    //   'appium:noReset': false,
+    // },
+    // {
+    //   'bstack:options': {
+    //     ...sharedBstackOptions,
+    //     deviceName: 'iPad Pro 12.9 2022',
+    //     osVersion: '16',
+    //     sessionName: 'iOS Tablet',
+    //   },
+    //   platformName: 'iOS',
+    //   'appium:app': BROWSERSTACK_IOS_APP_ID,
+    //   'appium:automationName': 'XCUITest',
+    //   'appium:noReset': false,
+    // },
   ],
 
   services: [

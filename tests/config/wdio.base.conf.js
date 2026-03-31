@@ -1,6 +1,9 @@
 const path = require('path');
+const ResultReporter = require('../utils/resultReporter');
 
 const specsDir = path.join(__dirname, '..', 'test', 'specs');
+
+let resultReporter;
 
 const baseConfig = {
   specs: [
@@ -28,6 +31,20 @@ const baseConfig = {
   waitforTimeout: 10000,
   connectionRetryTimeout: 30000,
   connectionRetryCount: 3,
+
+  onPrepare() {
+    resultReporter = new ResultReporter();
+  },
+  afterTest(test, context, { passed, error }) {
+    if (passed) {
+      resultReporter.onTestPass(test);
+    } else {
+      resultReporter.onTestFail({ ...test, error });
+    }
+  },
+  onComplete() {
+    resultReporter.onComplete();
+  },
 };
 
 module.exports = { baseConfig };

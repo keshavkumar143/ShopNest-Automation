@@ -1,8 +1,18 @@
+/**
+ * Navigation Flow Tests
+ *
+ * Tests screen-to-screen navigation:
+ * - Home <-> Product Detail
+ * - Home <-> Cart
+ * - Full flow: Home > Product > Add to Cart > Cart
+ *
+ * Note: After tapping "Add to Cart", the app shows a toast banner
+ * and auto-navigates back to Home after 1.2s (no native alert).
+ */
 const LoginScreen = require('../../screenObjects/LoginScreen');
 const HomeScreen = require('../../screenObjects/HomeScreen');
 const ProductScreen = require('../../screenObjects/ProductScreen');
 const CartScreen = require('../../screenObjects/CartScreen');
-const { dismissNativeAlert } = require('../../utils/helpers');
 
 describe('Navigation Flow', () => {
   before(async () => {
@@ -47,9 +57,11 @@ describe('Navigation Flow', () => {
     await HomeScreen.tapProduct('2');
     await ProductScreen.waitForScreen();
 
+    // Tap add to cart - app shows banner and auto-navigates back after 1.2s
     await ProductScreen.tapAddToCart();
-    await dismissNativeAlert();
+    await driver.pause(2000);
 
+    // Should be back on Home screen after auto-navigate
     await HomeScreen.waitForScreen();
     await HomeScreen.tapCartButton();
     await CartScreen.waitForScreen();
@@ -57,6 +69,7 @@ describe('Navigation Flow', () => {
     const itemName = await CartScreen.getItemName(0);
     expect(itemName).toBeTruthy();
 
+    // Clean up - remove item for other test suites
     await CartScreen.removeItem(0);
   });
 });

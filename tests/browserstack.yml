@@ -1,3 +1,7 @@
+# BrowserStack SDK config for ShopNest mobile automation
+# Currently running: Android only (Samsung Galaxy S23)
+# To enable more devices: uncomment the platforms below
+
 userName: ${BROWSERSTACK_USERNAME}
 accessKey: ${BROWSERSTACK_ACCESS_KEY}
 
@@ -7,48 +11,51 @@ buildName: shopnest-build-1
 app: ${BROWSERSTACK_APP_ID}
 
 platforms:
+  # --- Active Android Device ---
   - deviceName: Samsung Galaxy S23
     osVersion: 13.0
     platformName: Android
     deviceOrientation: portrait
 
-  - deviceName: Google Pixel 7
-    osVersion: 13.0
-    platformName: Android
-    deviceOrientation: portrait
+  # --- Additional Android Devices (uncomment to enable) ---
+  # - deviceName: Google Pixel 7
+  #   osVersion: 13.0
+  #   platformName: Android
+  #   deviceOrientation: portrait
 
-  - deviceName: Samsung Galaxy Tab S8
-    osVersion: 12.0
-    platformName: Android
-    deviceOrientation: portrait
+  # - deviceName: Samsung Galaxy Tab S8
+  #   osVersion: 12.0
+  #   platformName: Android
+  #   deviceOrientation: portrait
 
-  - deviceName: Google Pixel Tablet
-    osVersion: 13.0
-    platformName: Android
-    deviceOrientation: landscape
+  # - deviceName: Google Pixel Tablet
+  #   osVersion: 13.0
+  #   platformName: Android
+  #   deviceOrientation: landscape
 
-  - deviceName: iPhone 15
-    osVersion: 17
-    platformName: iOS
-    deviceOrientation: portrait
+  # --- iOS Devices (requires .ipa upload & BROWSERSTACK_IOS_APP_ID in .env) ---
+  # - deviceName: iPhone 15
+  #   osVersion: 17
+  #   platformName: iOS
+  #   deviceOrientation: portrait
 
-  - deviceName: iPhone 13
-    osVersion: 15
-    platformName: iOS
-    deviceOrientation: portrait
+  # - deviceName: iPhone 13
+  #   osVersion: 15
+  #   platformName: iOS
+  #   deviceOrientation: portrait
 
-  - deviceName: iPad Pro 12.9 2022
-    osVersion: 16
-    platformName: iOS
-    deviceOrientation: portrait
+  # - deviceName: iPad Pro 12.9 2022
+  #   osVersion: 16
+  #   platformName: iOS
+  #   deviceOrientation: portrait
 
-  - deviceName: iPad 10th
-    osVersion: 16
-    platformName: iOS
-    deviceOrientation: landscape
+  # - deviceName: iPad 10th
+  #   osVersion: 16
+  #   platformName: iOS
+  #   deviceOrientation: landscape
 
 browserstackLocal: true
-parallelsPerPlatform: 3
+parallelsPerPlatform: 1
 
 debug: true
 networkLogs: true

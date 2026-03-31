@@ -1,8 +1,18 @@
+/**
+ * Cart Functionality Tests
+ *
+ * Tests the complete cart workflow:
+ * - Adding products from Product Detail screen
+ * - Viewing cart items and total price
+ * - Removing items from cart
+ *
+ * Note: After tapping "Add to Cart", the app shows a toast banner
+ * and auto-navigates back to Home after 1.2s (no native alert).
+ */
 const LoginScreen = require('../../screenObjects/LoginScreen');
 const HomeScreen = require('../../screenObjects/HomeScreen');
 const ProductScreen = require('../../screenObjects/ProductScreen');
 const CartScreen = require('../../screenObjects/CartScreen');
-const { dismissNativeAlert } = require('../../utils/helpers');
 
 describe('Cart Functionality', () => {
   before(async () => {
@@ -18,11 +28,13 @@ describe('Cart Functionality', () => {
     const productName = await ProductScreen.getProductName();
     expect(productName).toBeTruthy();
 
+    // Tap add to cart - app shows banner and auto-navigates back after 1.2s
     await ProductScreen.tapAddToCart();
-    await dismissNativeAlert();
+    await driver.pause(2000);
   });
 
   it('should display items in the cart', async () => {
+    // Should be back on Home screen after auto-navigate
     await HomeScreen.waitForScreen();
     await HomeScreen.tapCartButton();
     await CartScreen.waitForScreen();

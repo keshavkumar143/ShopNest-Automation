@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Alert,
+  Animated,
 } from 'react-native';
 import { useCartStore } from '../utils/cartStore';
 import { Colors } from '../constants/theme';
@@ -14,13 +14,21 @@ import { Colors } from '../constants/theme';
 export default function ProductScreen({ route, navigation }) {
   const { product } = route.params;
   const addToCart = useCartStore((state) => state.addToCart);
+  const [showBanner, setShowBanner] = useState(false);
+  const [bannerOpacity] = useState(new Animated.Value(0));
 
   const handleAddToCart = () => {
     addToCart(product);
-    Alert.alert('Added', `${product.name} added to cart`, [
-      { text: 'Continue Shopping', onPress: () => navigation.goBack() },
-      { text: 'Go to Cart', onPress: () => navigation.navigate('Cart') },
-    ]);
+    setShowBanner(true);
+    Animated.timing(bannerOpacity, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+
+    setTimeout(() => {
+      navigation.goBack();
+    }, 1200);
   };
 
   return (
@@ -57,6 +65,16 @@ export default function ProductScreen({ route, navigation }) {
           <Text style={styles.addToCartText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
+
+      {showBanner && (
+        <Animated.View
+          style={[styles.banner, { opacity: bannerOpacity }]}
+          testID="added-to-cart-banner"
+          accessibilityLabel="added-to-cart-banner"
+        >
+          <Text style={styles.bannerText}>✓ {product.name} added to cart</Text>
+        </Animated.View>
+      )}
     </ScrollView>
   );
 }
@@ -112,5 +130,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: 0.5,
+  },
+  banner: {
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+    right: 20,
+    backgroundColor: '#2e7d32',
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  bannerText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

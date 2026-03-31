@@ -19,6 +19,9 @@ yarn-error.*
 .env*.local
 .env
 tests/.env
+tests/log/
+tests/logs/
+tests/results/
 *.tsbuildinfo
 app-example
 /ios
