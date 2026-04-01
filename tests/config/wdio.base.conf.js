@@ -4,6 +4,7 @@ const ResultReporter = require('../utils/resultReporter');
 
 const specsDir = path.join(__dirname, '..', 'test', 'specs');
 const tempResultsFile = path.join(__dirname, '..', 'results', '.temp-results.json');
+const screenshotsDir = path.join(__dirname, '..', 'screenshots');
 
 const baseConfig = {
   specs: [
@@ -40,12 +41,23 @@ const baseConfig = {
     fs.writeFileSync(tempResultsFile, JSON.stringify({ passed: [], failed: [] }));
   },
   afterTest(test, context, { passed, error }) {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const sanitizedTitle = test.title.replace(/[^a-zA-Z0-9]/g, '_');
+    const subfolder = passed ? 'passed' : 'failed';
+    const ssDir = path.join(screenshotsDir, subfolder);
+    if (!fs.existsSync(ssDir)) {
+      fs.mkdirSync(ssDir, { recursive: true });
+    }
+    const ssPath = path.join(ssDir, `${sanitizedTitle}_${timestamp}.png`);
+    browser.saveScreenshot(ssPath);
+
     const data = JSON.parse(fs.readFileSync(tempResultsFile, 'utf8'));
     if (passed) {
       data.passed.push({
         suite: test.parent,
         title: test.title,
         duration: test.duration,
+        screenshot: ssPath,
       });
     } else {
       data.failed.push({
@@ -54,6 +66,7 @@ const baseConfig = {
         duration: test.duration,
         error: error?.message || 'Unknown error',
         stack: error?.stack || '',
+        screenshot: ssPath,
       });
     }
     fs.writeFileSync(tempResultsFile, JSON.stringify(data));
