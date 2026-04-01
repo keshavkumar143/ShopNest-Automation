@@ -1,14 +1,3 @@
-/**
- * Cart Functionality Tests
- *
- * Tests the complete cart workflow:
- * - Adding products from Product Detail screen
- * - Viewing cart items and total price
- * - Removing items from cart
- *
- * Note: After tapping "Add to Cart", the app shows a toast banner
- * and auto-navigates back to Home after 1.2s (no native alert).
- */
 const LoginScreen = require('../../screenObjects/LoginScreen');
 const HomeScreen = require('../../screenObjects/HomeScreen');
 const ProductScreen = require('../../screenObjects/ProductScreen');
@@ -28,13 +17,11 @@ describe('Cart Functionality', () => {
     const productName = await ProductScreen.getProductName();
     expect(productName).toBeTruthy();
 
-    // Tap add to cart - app shows banner and auto-navigates back after 1.2s
     await ProductScreen.tapAddToCart();
     await driver.pause(2000);
   });
 
   it('should display items in the cart', async () => {
-    // Should be back on Home screen after auto-navigate
     await HomeScreen.waitForScreen();
     await HomeScreen.tapCartButton();
     await CartScreen.waitForScreen();
@@ -51,13 +38,20 @@ describe('Cart Functionality', () => {
     expect(total).toContain('$');
   });
 
-  it('should remove an item from cart', async () => {
-    await CartScreen.removeItem(0);
+  it('should place an order via checkout', async () => {
+    await CartScreen.tapCheckout();
+    await CartScreen.waitForCheckoutSummary();
 
-    const isEmpty = await CartScreen.isCartEmpty();
-    expect(isEmpty).toBe(true);
+    const checkoutTotal = await CartScreen.getCheckoutTotal();
+    expect(checkoutTotal).toContain('$');
 
-    const emptyMsg = await CartScreen.getEmptyMessage();
-    expect(emptyMsg).toBe('Your cart is empty');
+    await CartScreen.tapPayButton();
+    await CartScreen.waitForOrderSuccess();
+
+    const successMsg = await CartScreen.getSuccessMessage();
+    expect(successMsg).toBe('Order Placed Successfully!');
+
+    await driver.pause(3000);
+    await HomeScreen.waitForScreen();
   });
 });

@@ -1,9 +1,9 @@
 const path = require('path');
+const fs = require('fs');
 const ResultReporter = require('../utils/resultReporter');
 
 const specsDir = path.join(__dirname, '..', 'test', 'specs');
-
-let resultReporter;
+const tempResultsFile = path.join(__dirname, '..', 'results', '.temp-results.json');
 
 const baseConfig = {
   specs: [
@@ -32,18 +32,41 @@ const baseConfig = {
   connectionRetryTimeout: 30000,
   connectionRetryCount: 3,
 
-  onPrepare() {
-    resultReporter = new ResultReporter();
+  before() {
+    const dir = path.dirname(tempResultsFile);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(tempResultsFile, JSON.stringify({ passed: [], failed: [] }));
   },
   afterTest(test, context, { passed, error }) {
+    const data = JSON.parse(fs.readFileSync(tempResultsFile, 'utf8'));
     if (passed) {
-      resultReporter.onTestPass(test);
+      data.passed.push({
+        suite: test.parent,
+        title: test.title,
+        duration: test.duration,
+      });
     } else {
-      resultReporter.onTestFail({ ...test, error });
+      data.failed.push({
+        suite: test.parent,
+        title: test.title,
+        duration: test.duration,
+        error: error?.message || 'Unknown error',
+        stack: error?.stack || '',
+      });
     }
+    fs.writeFileSync(tempResultsFile, JSON.stringify(data));
   },
   onComplete() {
-    resultReporter.onComplete();
+    const reporter = new ResultReporter();
+    if (fs.existsSync(tempResultsFile)) {
+      const data = JSON.parse(fs.readFileSync(tempResultsFile, 'utf8'));
+      data.passed.forEach((t) => reporter.onTestPass(t));
+      data.failed.forEach((t) => reporter.onTestFail(t));
+      try { fs.unlinkSync(tempResultsFile); } catch (_) {}
+    }
+    reporter.onComplete();
   },
 };
 

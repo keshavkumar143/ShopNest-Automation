@@ -34,6 +34,26 @@ class CartScreen {
   async tapCheckout() {
     await tapElement('cart-checkout-button');
   }
+
+  async waitForCheckoutSummary() {
+    await waitForElement('checkout-summary');
+  }
+
+  async getCheckoutTotal() {
+    return getElementText('checkout-total');
+  }
+
+  async tapPayButton() {
+    await tapElement('checkout-pay-button');
+  }
+
+  async waitForOrderSuccess() {
+    await waitForElement('checkout-success', 15000);
+  }
+
+  async getSuccessMessage() {
+    return getElementText('checkout-success-message');
+  }
 }
 
 module.exports = new CartScreen();
