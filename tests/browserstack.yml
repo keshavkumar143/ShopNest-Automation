@@ -1,7 +1,3 @@
-# BrowserStack SDK config for ShopNest mobile automation
-# Currently running: Android only (Samsung Galaxy S23)
-# To enable more devices: uncomment the platforms below
-
 userName: ${BROWSERSTACK_USERNAME}
 accessKey: ${BROWSERSTACK_ACCESS_KEY}
 
@@ -11,13 +7,11 @@ buildName: shopnest-build-1
 app: ${BROWSERSTACK_APP_ID}
 
 platforms:
-  # --- Active Android Device ---
   - deviceName: Samsung Galaxy S23
     osVersion: 13.0
     platformName: Android
     deviceOrientation: portrait
 
-  # --- Additional Android Devices (uncomment to enable) ---
   # - deviceName: Google Pixel 7
   #   osVersion: 13.0
   #   platformName: Android
@@ -33,7 +27,6 @@ platforms:
   #   platformName: Android
   #   deviceOrientation: landscape
 
-  # --- iOS Devices (requires .ipa upload & BROWSERSTACK_IOS_APP_ID in .env) ---
   # - deviceName: iPhone 15
   #   osVersion: 17
   #   platformName: iOS
